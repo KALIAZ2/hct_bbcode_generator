@@ -260,53 +260,6 @@
             }
         },
 
-        // -------- 6. RAPPORT MEDICAL --------
-        rapport: {
-            name: 'Rapport Médical', icon: '📄',
-            sections: [
-                {
-                    title: 'Identification du patient', fields: [
-                        { id: 'nom', label: 'Nom', ph: 'Nom du patient' },
-                        { id: 'prenom', label: 'Prénom', ph: 'Prénom du patient' },
-                        { id: 'ddn', label: 'Date de naissance', ph: 'JJ/MM/AAAA' },
-                        { id: 'sexe', label: 'Sexe', type: 'select', options: ['Homme', 'Femme'] }
-                    ]
-                },
-                {
-                    title: 'Motif de consultation / admission', fields: [
-                        { id: 'motif', label: 'Motif', type: 'textarea', ph: 'Décrivez le motif...', rows: 3, cls: 'fw' }
-                    ]
-                },
-                {
-                    title: 'Examen clinique', fields: [
-                        { id: 'tension', label: 'Tension artérielle (mmHg)', ph: '120/80' },
-                        { id: 'fc', label: 'Fréquence cardiaque (bpm)', ph: '72' },
-                        { id: 'temp', label: 'Température (°C)', ph: '37.2' },
-                        { id: 'spo2', label: 'SpO2 (%)', ph: '98' },
-                        { id: 'glasgow', label: 'Score Glasgow (/15)', type: 'select', options: ['15', '14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3'] },
-                        { id: 'obs', label: 'Observations', type: 'textarea', ph: 'Observations cliniques...', rows: 3, cls: 'fw' }
-                    ]
-                },
-                {
-                    title: 'Diagnostic & traitement', fields: [
-                        { id: 'diagnostic', label: 'Diagnostic', type: 'textarea', ph: 'Diagnostic établi...', rows: 2, cls: 'fw' },
-                        { id: 'traitement_adm', label: 'Traitement administré', type: 'textarea', ph: 'Médicaments, actes...', rows: 2, cls: 'fw' },
-                        { id: 'orientation', label: 'Orientation du patient', type: 'textarea', ph: 'Retour à domicile, hospitalisation...', rows: 2, cls: 'fw' }
-                    ]
-                },
-                {
-                    title: 'Signature', fields: [
-                        { id: 'date_fait', label: 'Fait le', ph: 'JJ/MM/AAAA' },
-                        { id: 'lieu_fait', label: 'À', ph: 'Nashville' },
-                        { id: 'dr_nom', label: 'Nom du docteur', ph: 'Dr. Nom' },
-                        { id: 'service', label: 'Service', ph: 'Urgences' }
-                    ]
-                }
-            ],
-            generate: function () {
-                return '[table style="border:2px solid #0e7490; background-color:#ffffff; padding:15px; font-family:arial; color:#000000; width:100%;margin:auto;"]\n[tr][td]\n[center][img(500px,250px)]https://zupimages.net/up/23/09/2rts.png[/img][/center]\n\n[center][b][size=18]RAPPORT MÉDICAL[/size][/b][/center]\n[center][size=10]Confidentiel — HCT Healthcare[/size][/center]\n\n[hr]\n\n[left][b][u]Identification du patient :[/u][/b]\n\n[b]Nom[/b]: ' + v('nom') + '\n[b]Prénom[/b]: ' + v('prenom') + '\n[b]Date de naissance[/b]: ' + v('ddn') + '\n[b]Sexe[/b]: ' + v('sexe') + '\n\n[hr]\n\n[b][u]Motif de la consultation / admission :[/u][/b]\n\n' + v('motif') + '\n\n[b][u]Examen clinique :[/u][/b]\n\n[b]Tension artérielle[/b]: ' + v('tension') + ' mmHg\n[b]Fréquence cardiaque[/b]: ' + v('fc') + ' bpm\n[b]Température[/b]: ' + v('temp') + ' °C\n[b]SpO2[/b]: ' + v('spo2') + ' %\n[b]Score Glasgow[/b]: ' + v('glasgow') + ' /15\n\n[b]Observations[/b]:\n' + v('obs') + '\n\n[hr]\n\n[b][u]Diagnostic :[/u][/b]\n\n' + v('diagnostic') + '\n\n[b][u]Traitement administré :[/u][/b]\n\n' + v('traitement_adm') + '\n\n[b][u]Orientation du patient :[/u][/b]\n\n' + v('orientation') + '\n\n[/left]\n\n[right]Fait le ' + v('date_fait') + ' à ' + v('lieu_fait') + '\n[b]' + v('dr_nom') + '[/b]\nService : ' + v('service') + '[/right]\n[/td]\n[/tr]\n[/table]';
-            }
-        },
 
         // -------- 7. DEMANDE FORMATION --------
         formation: {
@@ -378,7 +331,6 @@
     // ============================================================
     var categories = [
         { title: '📋 Candidatures', keys: ['internat', 'candidature', 'surete', 'medecin', 'candidature_classique', 'reintegration'] },
-        { title: '📄 Documents médicaux', keys: ['rapport'] },
         { title: '🏫 Administration', keys: ['formation'] }
     ];
     categories.forEach(function (cat) {
