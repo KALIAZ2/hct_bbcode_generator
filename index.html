@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HCT Healthcare — Générateur BBCode</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0e7490;
+            --primary-light: #22d3ee;
+            --primary-dark: #065666;
+            --accent: #06b6d4;
+            --bg-dark: #0b1120;
+            --bg-card: #111827;
+            --bg-input: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: #1e3a5f;
+            --success: #10b981;
+            --danger: #ef4444;
+            --radius: 12px;
+            --tr: 0.3s cubic-bezier(0.4, 0, 0.2, 1)
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse at 20% 50%, rgba(6, 182, 212, .08) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(14, 116, 144, .06) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0
+        }
+
+        header {
+            position: relative;
+            z-index: 10;
+            background: linear-gradient(135deg, var(--bg-card), rgba(14, 116, 144, .15));
+            border-bottom: 1px solid var(--border);
+            padding: 1.2rem 2rem;
+            backdrop-filter: blur(20px)
+        }
+
+        .hi {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem
+        }
+
+        .la {
+            display: flex;
+            align-items: center;
+            gap: 1rem
+        }
+
+        .li {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent), var(--primary-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 0 20px rgba(6, 182, 212, .3);
+            animation: pg 3s ease-in-out infinite
+        }
+
+        @keyframes pg {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(6, 182, 212, .3)
+            }
+
+            50% {
+                box-shadow: 0 0 30px rgba(6, 182, 212, .5)
+            }
+        }
+
+        .lt h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary-light), var(--text-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text
+        }
+
+        .lt p {
+            font-size: .8rem;
+            color: var(--text-muted)
+        }
+
+        .hb {
+            background: rgba(6, 182, 212, .1);
+            border: 1px solid rgba(6, 182, 212, .3);
+            padding: .4rem 1rem;
+            border-radius: 50px;
+            font-size: .75rem;
+            color: var(--primary-light);
+            font-weight: 500
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem
+        }
+
+        @media(max-width:768px) {
+            main {
+                padding: 1rem
+            }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            transition: var(--tr);
+            animation: fiu .5s ease-out backwards
+        }
+
+        @keyframes fiu {
+            from {
+                opacity: 0;
+                transform: translateY(20px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .card:hover {
+            border-color: rgba(6, 182, 212, .3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .3)
+        }
+
+        .ch {
+            padding: 1rem 1.5rem;
+            background: rgba(6, 182, 212, .05);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: .5rem
+        }
+
+        .ch h2 {
+            font-size: .95rem;
+            font-weight: 600
+        }
+
+        .cb {
+            padding: 1.5rem
+        }
+
+        .tg {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .6rem
+        }
+
+        .tb {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .6rem 1.1rem;
+            border: 1px solid var(--border);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: .82rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--tr);
+            position: relative;
+            overflow: hidden
+        }
+
+        .tb::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--accent), var(--primary-dark));
+            opacity: 0;
+            transition: opacity .3s
+        }
+
+        .tb:hover::before,
+        .tb.active::before {
+            opacity: 1
+        }
+
+        .tb:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(6, 182, 212, .2)
+        }
+
+        .tb.active {
+            border-color: var(--accent);
+            box-shadow: 0 0 12px rgba(6, 182, 212, .3)
+        }
+
+        .tb span {
+            position: relative;
+            z-index: 1
+        }
+
+        .fs {
+            margin-bottom: 1.5rem
+        }
+
+        .fst {
+            font-size: .9rem;
+            font-weight: 600;
+            color: var(--primary-light);
+            margin-bottom: 1rem;
+            padding-left: .75rem;
+            border-left: 3px solid var(--accent)
+        }
+
+        .fg {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .75rem 1.2rem
+        }
+
+        @media(max-width:600px) {
+            .fg {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .fg .fw {
+            grid-column: 1/-1
+        }
+
+        .fi {
+            display: flex;
+            flex-direction: column;
+            gap: .3rem
+        }
+
+        .fi label {
+            font-size: .78rem;
+            font-weight: 500;
+            color: var(--text-secondary)
+        }
+
+        .fi input,
+        .fi select,
+        .fi textarea {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: .85rem;
+            padding: .55rem .75rem;
+            transition: var(--tr)
+        }
+
+        .fi input:focus,
+        .fi select:focus,
+        .fi textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, .15)
+        }
+
+        .fi textarea {
+            resize: vertical;
+            min-height: 80px
+        }
+
+        .fi select {
+            cursor: pointer
+        }
+
+        .fi select option {
+            background: var(--bg-card);
+            color: var(--text-primary)
+        }
+
+        .gb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+            width: 100%;
+            padding: .85rem;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent), var(--primary-dark));
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--tr);
+            margin-top: 1.5rem;
+            box-shadow: 0 4px 20px rgba(6, 182, 212, .3)
+        }
+
+        .gb:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 28px rgba(6, 182, 212, .45)
+        }
+
+        #output-area {
+            display: none
+        }
+
+        #bbcode-output {
+            width: 100%;
+            min-height: 200px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: Consolas, Monaco, monospace;
+            font-size: .82rem;
+            padding: 1rem;
+            resize: vertical;
+            line-height: 1.6
+        }
+
+        #bbcode-output:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, .15)
+        }
+
+        .oa {
+            display: flex;
+            gap: .75rem;
+            margin-top: .75rem;
+            flex-wrap: wrap
+        }
+
+        .bc {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--accent), var(--primary-dark));
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: .85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--tr);
+            box-shadow: 0 4px 16px rgba(6, 182, 212, .3)
+        }
+
+        .bc:hover {
+            transform: translateY(-2px)
+        }
+
+        .bcl {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .6rem 1.2rem;
+            border: 1px solid rgba(239, 68, 68, .3);
+            border-radius: 8px;
+            background: rgba(239, 68, 68, .1);
+            color: var(--danger);
+            font-family: 'Inter', sans-serif;
+            font-size: .85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--tr)
+        }
+
+        .bcl:hover {
+            background: rgba(239, 68, 68, .2)
+        }
+
+        .pv {
+            background: #fff;
+            border-radius: 8px;
+            padding: 1.5rem;
+            min-height: 200px;
+            color: #000;
+            font-family: Arial, sans-serif;
+            font-size: .9rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            word-wrap: break-word
+        }
+
+        .pv img {
+            max-width: 100%;
+            height: auto
+        }
+
+        .pv table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        .pv hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 1rem 0
+        }
+
+        .pv .sb {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin: .5rem 0;
+            overflow: hidden
+        }
+
+        .pv .sh {
+            background: #ddd;
+            padding: .4rem .8rem;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: .85rem
+        }
+
+        .pv .sc {
+            padding: .8rem;
+            display: none
+        }
+
+        .pv .sc.open {
+            display: block
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--success);
+            color: var(--success);
+            padding: .8rem 1.5rem;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: .85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .4);
+            z-index: 1000;
+            transform: translateY(120%);
+            opacity: 0;
+            transition: all .4s cubic-bezier(.4, 0, .2, 1)
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1
+        }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: .75rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark)
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="hi">
+            <div class="la">
+                <div class="li">🏥</div>
+                <div class="lt">
+                    <h1>HCT Healthcare</h1>
+                    <p>Générateur de BBCode Médical</p>
+                </div>
+            </div>
+            <div class="hb">⚕ Système interne RP</div>
+        </div>
+    </header>
+    <main>
+        <section class="card">
+            <div class="ch">
+                <h2>📋 Sélectionnez un template</h2>
+            </div>
+            <div class="cb" id="tg-container"></div>
+        </section>
+        <section class="card" id="form-card" style="display:none">
+            <div class="ch">
+                <h2 id="form-title">✏️ Formulaire</h2>
+            </div>
+            <div class="cb">
+                <div id="fc"></div><button class="gb" onclick="generateBBCode()">⟨/⟩ Générer le BBCode</button>
+            </div>
+        </section>
+        <div id="output-area">
+            <section class="card">
+                <div class="ch">
+                    <h2>📄 BBCode généré</h2>
+                </div>
+                <div class="cb">
+                    <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem">
+                        <button class="bc" onclick="copyBBCode()" style="font-size:.95rem;padding:.75rem 2rem">📋 Copier
+                            le BBCode</button>
+                        <button class="bcl" onclick="clearAll()">🗑️ Effacer tout</button>
+                    </div>
+                    <textarea id="bbcode-output" readonly></textarea>
+                </div>
+            </section>
+        </div>
+        <section class="card" id="preview-card" style="display:none">
+            <div class="ch">
+                <h2>👁️ Prévisualisation</h2>
+            </div>
+            <div class="cb">
+                <div class="pv" id="preview">
+                    <div
+                        style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:200px;color:#aaa;text-align:center;gap:1rem">
+                        <div style="font-size:3rem;opacity:.4">🔍</div>
+                        <p>La prévisualisation apparaîtra ici après génération.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div style="display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:1rem">
+            <a href="https://hct-intra.forumactif.com" target="_blank"
+                style="color:var(--primary-light);text-decoration:none;font-weight:500">🌐 Intranet HCT</a>
+            <a href="https://discord.gg/uxfcjrUKWc" target="_blank"
+                style="color:var(--primary-light);text-decoration:none;font-weight:500">💬 Discord</a>
+            <a href="https://gtacityrp.fr/index.php" target="_blank"
+                style="color:var(--primary-light);text-decoration:none;font-weight:500">🎮 GTACity RP</a>
+        </div>
+        &copy; 2026 HCT Healthcare — Générateur BBCode interne. Tous droits réservés.
+    </footer>
+    <div class="toast" id="toast"><span>✓</span><span id="toast-msg"></span></div>
+    <script src="app.js"></script>
+</body>
+
+</html>
